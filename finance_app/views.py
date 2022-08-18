@@ -136,7 +136,7 @@ def delete_income(request):
 def get_plots(request):
     """This function returns points to be plotted"""
     # We are going to use pandas library to make a dataframe and 
-    # pass its values to chart js javascrip code on our frontend
+    # pass its values to chart js javascript code on our frontend
 
     import pandas as pd
     # Lets get our details from the user's income
@@ -153,9 +153,9 @@ def get_plots(request):
         if income.growth:
             # if growth is available set the new value from 65 to the stopping age
             df[income.description].loc[65:income.age_stop] = income.growth
-    # Create a column with tottal of the values
+    # Create a column with total of the values
     df['Total Income'] = df.sum(axis=1)
-    # pass the data to a JSONRESponse in form of a dictionary
+    # pass the data to a JSONresponse in form of a dictionary
     data = {
         'y_data': unpack_dataframe(df),
         'x_data': [int(i) for i in df.index.values],
