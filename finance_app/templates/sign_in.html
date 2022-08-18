@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% block title %}
+Sign In
+{% endblock title %}
+{% block nav %}
+
+{% endblock %}
+{% load static %}
+{% block body %}
+
+<div class="py-5"></div>
+<div class="row justify-content-center mx-auto text-center">
+    <div class="col-lg-6">
+        <div class="card-body">
+            <div class="p-lg-5 py-5 bg-light shadow mb-5 border-warning">
+                <div class="container text-center">
+                    {% if errors %}
+                    <h1 class="display-6 text-danger">Invalid</h1>
+                    <p class="lead"><span class="text-danger">Wrong credentials,</span> Try again</p>
+                    {% else %}
+                    <h1 class="display-6">Sign In</h1>
+                    <p class="lead">Enter your credentials below to proceed <br>You need to be logged in to continue</p>
+
+                    {% endif %}
+
+                    <hr class="my-2">
+
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Username</label>
+                            {{form.username}}
+                            <small id="emailHelp" class="form-text text-muted">{{form.username.help_text}}</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            {{form.password}}
+                            <small id="emailHelp" class="form-text text-muted">Enter your valid password.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                    <p class="lead"><a href="{% url 'register' %}">Don't have an account yet
+                            !</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

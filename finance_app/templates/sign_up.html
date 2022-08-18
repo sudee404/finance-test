@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+Sign Up
+{% endblock title %}
+{% block nav %}
+
+{% endblock %}
+{% block body %}
+<div class="row justify-content-center mx-auto text-center">
+    <div class="col-lg-6">
+        <div class="card-body">
+            <div class="p-lg-5 py-5 shadow mb-5 ">
+                <div class="container text-center">
+                    <h1 class="display-6">Sign Up</h1>
+                    <p class="lead">Enter your credentials below to sign up</p>
+                    <hr class="my-2">
+
+                    <form method="post" class="row g-3 justify-content-center mx-auto">
+                        {% csrf_token %}
+                        {{form}}
+                        <button type="submit" class="btn btn-success ">Sign Up</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
