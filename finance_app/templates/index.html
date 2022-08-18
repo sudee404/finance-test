@@ -283,29 +283,7 @@
                 data: {
 
                     labels: labels.x_data,
-                    datasets: [
-                        {
-                            label: "Total Income",
-                            data: labels.y_data,
-                            backgroundColor: [
-                                "rgba(255, 99, 132, 0.2)",
-                                "rgba(54, 162, 235, 0.2)",
-                                "rgba(255, 206, 86, 0.2)",
-                                "rgba(75, 192, 192, 0.2)",
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(255, 159, 64, 0.2)",
-                            ],
-                            borderColor: [
-                                "rgba(255, 99, 132, 1)",
-                                "rgba(54, 162, 235, 1)",
-                                "rgba(255, 206, 86, 1)",
-                                "rgba(75, 192, 192, 1)",
-                                "rgba(153, 102, 255, 1)",
-                                "rgba(255, 159, 64, 1)",
-                            ],
-                            borderWidth: 3,
-                        },
-                    ],
+                    datasets: load_datasets(labels.y_data),
                 },
                 options: {
                     responsive: true,
@@ -342,7 +320,31 @@
                 },
             });
         }
+        function load_datasets(arr) {
+            var dataset = Array()
+            arr.forEach(element => {
+                var data = {
+                    label: Object.keys(element)[0],
+                    data: Object.values(element)[0],
+                    borderColor: getRandomRgb(),
+                    borderWidth: 3,
+                    backgroundColor: getRandomRgb(),
+                }
+                dataset.push(data)
+            });
 
+            return dataset
+
+        }
+        // lets write a function to generate random colors to use with our chart
+        function getRandomRgb() {
+            var num = Math.round(0xffffff * Math.random());
+            var r = num >> 16;
+            var g = num >> 8 & 255;
+            var b = num & 255;
+            return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        }
+        
         function delete_item(id) {
             $.ajax({
                 type: "get",

@@ -5,7 +5,6 @@ from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
 from .models import Income, IncomeInstance
 from django.http import JsonResponse, HttpResponse
-
 from .forms import LoginForm, UserForm, IncomeInstanceForm
 
 # Create your views here.
@@ -142,25 +141,41 @@ def get_plots(request):
     import pandas as pd
     # Lets get our details from the user's income
     incomes = get_object_or_404(Income, owner=request.user).get_instances()
-    # use a set to deal with duplicate values and 
-    # add in the limits of the graph and its center(retirement age)
+    # Use a pandas dataframe to hold our data for easier manipulation
 
-    # ages = (set(x.age_start for x in incomes)
-    #         | set(x.age_stop for x in incomes))
-    # ages = list(ages)
-    # ages.sort()
     df = pd.DataFrame(index=[i for i in range(40,91)])
-
+    # add income data to the dataframe
     for income in incomes:
+        # add a column with all values as 0
         df[income.description] = 0
+        # set values from age start to stop
         df[income.description].loc[income.age_start:income.age_stop] = income.amount
         if income.growth:
+            # if growth is available set the new value from 65 to the stopping age
             df[income.description].loc[65:income.age_stop] = income.growth
-
-    df['sum'] = df.sum(axis=1)
-    print(df)
+    # Create a column with tottal of the values
+    df['Total Income'] = df.sum(axis=1)
+    # pass the data to a JSONRESponse in form of a dictionary
     data = {
-        'y_data': [int(i) for i in df['sum'].values],
+        'y_data': unpack_dataframe(df),
         'x_data': [int(i) for i in df.index.values],
     }
     return JsonResponse(data)
+
+def unpack_dataframe(df):
+    """Unpack Pandas dataframe into a list of dictionaries 
+
+    Args:
+        df (pd.DataFrame): A pandas DataFrame
+
+    Returns:
+        list: A list of dictionaries
+    """
+    lst = []
+    for column in df.columns:
+        data = {}
+        data[column] = [int(i) for i in df[column].values]
+        lst.append(data)
+
+    
+    return lst
