@@ -5,7 +5,7 @@
 <head>
     <title>
         {% block title %}
-            Finance
+        Finance
         {% endblock title %}
     </title>
     <!-- Required meta tags -->
@@ -17,7 +17,7 @@
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+
 
 </head>
 
@@ -167,7 +167,6 @@
             <div class="container-fluid">
                 <h1 class="display-5 fw-normal">Income Charts</h1>
                 <p class="lead">Get insight into your total income over the years</p>
-                <p>Total income graph </p>
             </div>
         </div>
         <div class="col-12 p-2">
@@ -259,12 +258,12 @@
                         st = $w.scrollTop(),
 
                         navbar = $('#navbar')
-                    
+
                     if (st > 600) {
                         if (!navbar.hasClass("shadow-lg")) {
                             navbar.addClass("shadow-lg");
                         }
-                        
+
                     }
                     if (st < 600) {
                         if (navbar.hasClass("shadow-lg")) {
@@ -282,7 +281,7 @@
             const myChart = new Chart(ctx, {
                 type: "line",
                 data: {
-                    
+
                     labels: labels.x_data,
                     datasets: [
                         {
@@ -304,14 +303,39 @@
                                 "rgba(153, 102, 255, 1)",
                                 "rgba(255, 159, 64, 1)",
                             ],
-                            borderWidth: 1,
+                            borderWidth: 3,
                         },
                     ],
                 },
                 options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Total Income Chart'
+                        },
+                    },
+                    elements: {
+                        point: {
+                            radius: 0.5
+                        },
+                    },
                     scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Age'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10
+                            },
+                        },
                         y: {
                             beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Income'
+                            },
 
                         },
                     },

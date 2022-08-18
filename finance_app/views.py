@@ -145,24 +145,22 @@ def get_plots(request):
     # use a set to deal with duplicate values and 
     # add in the limits of the graph and its center(retirement age)
 
-    ages = (set(x.age_start for x in incomes)
-            | set(x.age_stop for x in incomes))
-    ages = list(ages | set([40, 65, 90]))
-    ages.sort()
-    df = pd.DataFrame(index=[ages])
+    # ages = (set(x.age_start for x in incomes)
+    #         | set(x.age_stop for x in incomes))
+    # ages = list(ages)
+    # ages.sort()
+    df = pd.DataFrame(index=[i for i in range(40,91)])
 
     for income in incomes:
         df[income.description] = 0
-        df[income.description].loc[income.age_start] = income.amount
-        df[income.description].loc[income.age_stop] = income.amount
+        df[income.description].loc[income.age_start:income.age_stop] = income.amount
         if income.growth:
-            df[income.description].loc[65] = income.growth
-            df[income.description].loc[income.age_stop] = income.growth
+            df[income.description].loc[65:income.age_stop] = income.growth
 
     df['sum'] = df.sum(axis=1)
     print(df)
     data = {
         'y_data': [int(i) for i in df['sum'].values],
-        'x_data': [i for i in df.index.values],
+        'x_data': [int(i) for i in df.index.values],
     }
     return JsonResponse(data)
