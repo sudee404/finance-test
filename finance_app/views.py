@@ -151,8 +151,9 @@ def get_plots(request):
         # set values from age start to stop
         df[income.description].loc[income.age_start:income.age_stop] = income.amount
         if income.growth:
-            # if growth is available set the new value from 65 to the stopping age
-            df[income.description].loc[65:income.age_stop] = income.growth
+            # if growth is available set the new value for 65 and the stopping age
+            df[income.description].loc[income.age_start:65] = [i for i in get_vals(income.age_start,65,income.amount,income.growth)]
+            df[income.description].loc[66:income.age_stop] = income.growth
     # Create a column with total of the values
     df['Total Income'] = df.sum(axis=1)
     # pass the data to a JSONresponse in form of a dictionary
@@ -179,3 +180,21 @@ def unpack_dataframe(df):
 
     
     return lst
+
+def get_vals(start,stop,amount,growth):
+    diff_income = growth - amount
+    diff = diff_income//(stop-start)
+    lst = [i for i in range(start,stop+1)]
+    vals = []
+    amount_copy = amount
+    for i in lst:
+        if i == start:
+            vals.append(amount)
+        elif i == stop:
+            vals.append(growth)
+            break
+        else:
+            vals.append(amount_copy)
+        amount_copy += diff
+
+    return vals
