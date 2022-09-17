@@ -5,6 +5,6 @@ The site helps you get your total income<br>
 <br>
 # Usage
 Go to the hosted <a href="https://mash404.pythonanywhere.com/">site</a><br>
-Either create an account or use the ones given below<br>
+Either create an account or use the one given below<br>
 Username : mexus<br>
 Password : Eccu37kfgSLMMPU<br>
